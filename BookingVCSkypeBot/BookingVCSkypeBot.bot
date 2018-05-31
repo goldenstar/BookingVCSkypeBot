@@ -1,0 +1,14 @@
+{
+  "name": "BookingVCSkypeBot",
+  "secretKey": "",
+  "services": [
+    {
+      "appId": "",
+      "id": "https://bookingvcskypebotgodeltest.azurewebsites.net/api/messages",
+      "type": "endpoint",
+      "appPassword": "",
+      "endpoint": "https://bookingvcskypebotgodeltest.azurewebsites.net/api/messages",
+      "name": "BookingVCSkypeBot"
+    }
+  ]
+}

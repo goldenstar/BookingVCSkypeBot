@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using BookingVCSkypeBot.Authentication;
+using BookingVCSkypeBot.Authentication.AADv2;
 using BookingVCSkypeBot.Core.Interfaces;
 using BookingVCSkypeBot.Core.Services;
 using BookingVCSkypeBot.Dialogs;
@@ -27,6 +29,11 @@ namespace BookingVCSkypeBot
                 .Keyed<IVCService>(FiberModule.Key_DoNotSerialize)
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            // Authentication providers
+            builder.RegisterType<MSALAuthProvider>()
+                .As<IAuthProvider>()
+                .InstancePerDependency();
         }
     }
 }

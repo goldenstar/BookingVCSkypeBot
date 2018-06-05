@@ -4,10 +4,10 @@
   "services": [
     {
       "appId": "",
-      "id": "https://bookingvcskypebotgodeltest.azurewebsites.net/api/messages",
+      "id": "http://localhost:3980/api/messages",
       "type": "endpoint",
       "appPassword": "",
-      "endpoint": "https://bookingvcskypebotgodeltest.azurewebsites.net/api/messages",
+      "endpoint": "http://localhost:3980/api/messages",
       "name": "BookingVCSkypeBot"
     }
   ]

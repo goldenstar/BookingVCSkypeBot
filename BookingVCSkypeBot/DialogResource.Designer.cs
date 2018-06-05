@@ -115,11 +115,11 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok. The meeting starts in {1} and ends in {2}..
+        ///   Looks up a localized string similar to Ok. You want to invate {0} people from {1}. The meeting starts in {2} and ends in {3}..
         /// </summary>
-        internal static string MeetingDateTimeSelected {
+        internal static string MeetingSelected {
             get {
-                return ResourceManager.GetString("MeetingDateTimeSelected", resourceCulture);
+                return ResourceManager.GetString("MeetingSelected", resourceCulture);
             }
         }
         
@@ -151,11 +151,11 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok. You want to invite {0} people..
+        ///   Looks up a localized string similar to I&apos;m a simple bot that doesn&apos;t do much, but I know your name is {0} and your UPN is {1}.
         /// </summary>
-        internal static string PeopleCountSelected {
+        internal static string SimpleBot {
             get {
-                return ResourceManager.GetString("PeopleCountSelected", resourceCulture);
+                return ResourceManager.GetString("SimpleBot", resourceCulture);
             }
         }
         
@@ -196,11 +196,11 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok. Your town is {0}..
+        ///   Looks up a localized string similar to Your name is {0} and your UPN is {1}..
         /// </summary>
-        internal static string TownSelected {
+        internal static string UserName {
             get {
-                return ResourceManager.GetString("TownSelected", resourceCulture);
+                return ResourceManager.GetString("UserName", resourceCulture);
             }
         }
         

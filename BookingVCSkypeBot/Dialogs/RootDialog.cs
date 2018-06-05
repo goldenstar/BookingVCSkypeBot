@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using BookingVCSkypeBot.Authentication;
+using Microsoft.Bot.Connector;
+using Microsoft.Bot.Builder.Dialogs;
 using BookingVCSkypeBot.Core.Interfaces;
 using BookingVCSkypeBot.Dialogs.MeetingDateTimeDialogs;
 using BookingVCSkypeBot.Models;
-using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
+using BookingVCSkypeBot.Authentication.Dialogs;
+using BookingVCSkypeBot.Authentication.Models;
 
 namespace BookingVCSkypeBot.Dialogs
 {
@@ -13,11 +18,13 @@ namespace BookingVCSkypeBot.Dialogs
     public class RootDialog : IDialog<object>
     {
         private readonly ITownService townService;
+        private readonly IAuthProvider authProvider;
         private MeetingModel meetingModel;
 
-        public RootDialog(ITownService townService)
+        public RootDialog(ITownService townService, IAuthProvider authProvider)
         {
             this.townService = townService;
+            this.authProvider = authProvider;
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -25,24 +32,44 @@ namespace BookingVCSkypeBot.Dialogs
             context.Wait(MessageReceivedAsync);
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        public virtual async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> item)
         {
-            await SelectTown(context);
+            var message = await item;
+
+            // Initialize AuthenticationOptions and forward to AuthDialog for token
+            var options = new AuthenticationOptions
+            {
+                Authority = ConfigurationManager.AppSettings["aad:Authority"],
+                ClientId = ConfigurationManager.AppSettings["aad:ClientIdTest"],
+                ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecretTest"],
+                Scopes = new[] { "User.Read" },
+                RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"],
+                MagicNumberView = "/magic.html#{0}"
+            };
+
+            var authDialog = new AuthDialog(authProvider, options);
+
+            await context.Forward(authDialog, AuthenticationResumeAfterAsync, message, CancellationToken.None);
         }
 
-        private async Task SelectTown(IDialogContext context)
+        private async Task AuthenticationResumeAfterAsync(IDialogContext context, IAwaitable<AuthResult> result)
         {
-            await context.PostAsync(DialogResource.WelcomeMessage);
+            var message = await result;
 
+            SelectTown(context);
+        }
+
+        private void SelectTown(IDialogContext context)
+        {
             var towns = townService.ListAll().Select(x => x.Name).ToList().AsReadOnly();
 
             var options = new PromptOptions<string>(DialogResource.Town, tooManyAttempts: DialogResource.ManyAttempts,
                 options: towns, attempts: 2);
 
-            PromptDialog.Choice(context, SelectTownResumeAfter, options);
+            PromptDialog.Choice(context, SelectTownResumeAfterAsync, options);
         }
 
-        private async Task SelectTownResumeAfter(IDialogContext context, IAwaitable<string> result)
+        private async Task SelectTownResumeAfterAsync(IDialogContext context, IAwaitable<string> result)
         {
             meetingModel = new MeetingModel();
 
@@ -52,17 +79,15 @@ namespace BookingVCSkypeBot.Dialogs
 
                 meetingModel.TownName = town;
 
-                await context.PostAsync(string.Format(DialogResource.TownSelected, town));
-
-                context.Call(new PeopleCountDialog(), PeopleCountResumeAfter);
+                context.Call(new PeopleCountDialog(), PeopleCountResumeAfterAsync);
             }
             catch (TooManyAttemptsException)
             {
-                await SelectTown(context);
+                SelectTown(context);
             }
         }
 
-        private async Task PeopleCountResumeAfter(IDialogContext context, IAwaitable<int> result)
+        private async Task PeopleCountResumeAfterAsync(IDialogContext context, IAwaitable<int> result)
         {
             try
             {
@@ -70,19 +95,17 @@ namespace BookingVCSkypeBot.Dialogs
 
                 meetingModel.PeopleCount = peopleCount;
 
-                await context.PostAsync(string.Format(DialogResource.PeopleCountSelected, peopleCount));
-
-                context.Call(new StartMeetingDateTimeDialog(), BookingDateTimeResumeAfter);
+                context.Call(new StartMeetingDateTimeDialog(), BookingDateTimeResumeAfterAsync);
             }
             catch (TooManyAttemptsException)
             {
                 await context.PostAsync(DialogResource.ManyAttempts);
 
-                await SelectTown(context);
+                SelectTown(context);
             }
         }
 
-        private async Task BookingDateTimeResumeAfter(IDialogContext context, IAwaitable<DateTime> result)
+        private async Task BookingDateTimeResumeAfterAsync(IDialogContext context, IAwaitable<DateTime> result)
         {
             try
             {
@@ -90,17 +113,17 @@ namespace BookingVCSkypeBot.Dialogs
 
                 meetingModel.StartDateTime = dateTime;
 
-                context.Call(new DurationMeetingDialog(), DurationMeetingResumeAfter);
+                context.Call(new DurationMeetingDialog(), DurationMeetingResumeAfterAsync);
             }
             catch (TooManyAttemptsException)
             {
                 await context.PostAsync(DialogResource.ManyAttempts);
 
-                await SelectTown(context);
+                SelectTown(context);
             }
         }
 
-        private async Task DurationMeetingResumeAfter(IDialogContext context, IAwaitable<TimeSpan> result)
+        private async Task DurationMeetingResumeAfterAsync(IDialogContext context, IAwaitable<TimeSpan> result)
         {
             try
             {
@@ -109,17 +132,22 @@ namespace BookingVCSkypeBot.Dialogs
                 meetingModel.Duration = duration;
                 meetingModel.EndDateTime = meetingModel.StartDateTime + meetingModel.Duration;
 
-                await context.PostAsync(string.Format(DialogResource.MeetingDateTimeSelected, meetingModel.StartDateTime, meetingModel.EndDateTime));
+                await context.PostAsync(ConfirmMessage());
             }
             catch (TooManyAttemptsException)
             {
                 await context.PostAsync(DialogResource.ManyAttempts);
 
-                await SelectTown(context);
+                SelectTown(context);
             }
 
             await context.PostAsync("The end!");
         }
-    
+
+        private string ConfirmMessage()
+        {
+            return string.Format(DialogResource.MeetingSelected, meetingModel.PeopleCount, meetingModel.TownName,
+                meetingModel.StartDateTime, meetingModel.EndDateTime);
+        }
     }
 }

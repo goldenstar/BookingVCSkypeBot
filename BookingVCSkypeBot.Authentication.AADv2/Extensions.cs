@@ -5,18 +5,16 @@ namespace BookingVCSkypeBot.Authentication.AADv2
 {
     public static class Extensions
     {
-        public static AuthResult FromMSALAuthenticationResult(this AuthenticationResult authResult, TokenCache tokenCache)
+        public static AuthResult ToAuthResult(this AuthenticationResult authResult, TokenCache tokenCache)
         {
-            var result = new AuthResult
+            return new AuthResult
             {
                 AccessToken = authResult.AccessToken,
-                UserName = $"{authResult.User.Name}",
-                UserUniqueId = authResult.User.Identifier,
+                UserName = authResult.User.Name,
+                UserId = authResult.User.Identifier,
                 ExpiresOnUtcTicks = authResult.ExpiresOn.UtcTicks,
                 TokenCache = tokenCache.Serialize()
             };
-
-            return result;
         }
     }
 }

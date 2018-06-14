@@ -8,10 +8,6 @@ namespace BookingVCSkypeBot.Authentication
     {
         Task<string> GetAuthUrlAsync(AuthenticationOptions authOptions, string state);
         Task<AuthResult> GetTokenByAuthCodeAsync(AuthenticationOptions authOptions, string authorizationCode);
-        Task<AuthResult> GetAccessToken(AuthenticationOptions authOptions, IDialogContext context);
-        string Name
-        {
-            get;
-        }
+        Task<AuthResult> GetTokenByContextAsync(AuthenticationOptions authOptions, IDialogContext context);
     }
 }

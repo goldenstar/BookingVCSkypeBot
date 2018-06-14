@@ -10,7 +10,7 @@ namespace BookingVCSkypeBot.Dialogs.MeetingDateTimeDialogs
     {
         public override async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync(string.Format(DialogResource.Date));
+            await context.PostAsync(string.Format(DialogRes.Date));
 
             context.Wait(MessageReceivedAsync);
         }
@@ -23,20 +23,20 @@ namespace BookingVCSkypeBot.Dialogs.MeetingDateTimeDialogs
             {
                 if (bookingDate >= DateTime.Today)
                 {
-                    context.Call(new StartMeetingTimeDialog(bookingDate), ResumeAfterBookingTimeDialog);
+                    context.Call(new StartMeetingTimeDialog(bookingDate), ResumeAfterBookingTimeDialogAsync);
                 }
                 else
                 {
-                    await SetDialogError(context, DialogResource.DateNotValidInPast);
+                    await SetDialogErrorAsync(context, DialogRes.DateNotValidInPast);
                 }
             }
             else
             {
-                await SetDialogError(context, DialogResource.DateNotValid);
+                await SetDialogErrorAsync(context, DialogRes.ValueNotValid);
             }
         }
 
-        private async Task ResumeAfterBookingTimeDialog(IDialogContext context, IAwaitable<DateTime> result)
+        private async Task ResumeAfterBookingTimeDialogAsync(IDialogContext context, IAwaitable<DateTime> result)
         {
             var message = await result;
 

@@ -10,7 +10,7 @@ namespace BookingVCSkypeBot.Dialogs
     {
         public override async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync(string.Format(DialogResource.PeopleCount));
+            await context.PostAsync(string.Format(DialogRes.PeopleCount));
 
             context.Wait(MessageReceivedAsync);
         }
@@ -25,7 +25,7 @@ namespace BookingVCSkypeBot.Dialogs
             }
             else
             {
-                await SetDialogError(context, DialogResource.PeopleCountNotValid);
+                await SetDialogErrorAsync(context, DialogRes.PeopleCountNotValid);
             }
         }
     }

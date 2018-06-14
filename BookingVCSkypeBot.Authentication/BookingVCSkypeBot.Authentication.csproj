@@ -98,19 +98,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthText.Designer.cs">
+    <Compile Include="AuthRes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AuthText.resx</DependentUpon>
+      <DependentUpon>AuthRes.resx</DependentUpon>
     </Compile>
-    <Compile Include="ContextConstants.cs" />
+    <Compile Include="ContextKey.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Controllers\CallbackController.cs" />
     <Compile Include="Dialogs\AuthDialog.cs" />
+    <Compile Include="Helpers\LoginCard.cs" />
     <Compile Include="IAuthProvider.cs" />
     <Compile Include="Models\AuthenticationOptions.cs" />
     <Compile Include="Models\AuthResult.cs" />
-    <Compile Include="Models\CancellationWords.cs" />
+    <Compile Include="Models\CallbackModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -120,9 +121,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AuthText.resx">
+    <EmbeddedResource Include="AuthRes.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AuthText.Designer.cs</LastGenOutput>
+      <LastGenOutput>AuthRes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

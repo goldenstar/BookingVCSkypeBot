@@ -117,7 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NotValid" xml:space="preserve">
+    <value>I'm sorry, I'm having issues understanding you. Let's try again.</value>
+  </data>
+  <data name="TownNotValid" xml:space="preserve">
+    <value>I am sorry but I don't understand that. I need you to select one of the options below.</value>
+  </data>
+  <data name="PeopleCount" xml:space="preserve">
+    <value>How many people do you want to invite in the VC?</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Please, select a location</value>
+  </data>
+  <data name="WelcomeMessage" xml:space="preserve">
+    <value>Hi, I'm the Booking VC Skype bot. Let's get started.</value>
+  </data>
+  <data name="PeopleCountNotValid" xml:space="preserve">
+    <value>I'm sorry, I don't understand your reply. What is people count (e.g. '5')?</value>
+  </data>
+  <data name="ManyAttempts" xml:space="preserve">
+    <value>Ooops! Too many attempts :(. But don't worry, I'm handling that exception and you can try again!</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Please, enter your date of meeting (MM/dd/yyyy)</value>
+  </data>
+  <data name="DateNotValidInPast" xml:space="preserve">
+    <value>Please, enter a future date.</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Please, enter start time of meeting (hh:mm)</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Please, enter meeting duration (e.g. '30m', '2h', '0.5h').</value>
+  </data>
+  <data name="MeetingSelected" xml:space="preserve">
+    <value>You want to invate {0} people from {1}. The meeting starts in {2} and ends in {3}. Is it right?</value>
+  </data>
+  <data name="SimpleBot" xml:space="preserve">
+    <value>I'm a simple bot that doesn't do much, but I know your name is {0} and your UPN is {1}</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Your name is {0} and your UPN is {1}.</value>
+  </data>
+  <data name="ValueNotValid" xml:space="preserve">
+    <value>The value you entered is not a valid. Please try again.</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="CancellationWords" xml:space="preserve">
-    <value>QUIT,CANCEL,STOP,GO BACK,RESET,HELP</value>
+    <value>QUIT,CANCEL,STOP,EXIT</value>
   </data>
 </root>

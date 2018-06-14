@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BookingVCSkypeBot.Authentication.AADv2")]
+[assembly: AssemblyTitle("BookingVCSkypeBot.Infrastructure")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BookingVCSkypeBot.Authentication.AADv2")]
+[assembly: AssemblyProduct("BookingVCSkypeBot.Infrastructure")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1f07ca7c-6a50-4639-985e-004501cb59a2")]
+[assembly: Guid("bb681955-a9ea-45ff-9a79-e8375ec5e85f")]
 
 // Version information for an assembly consists of the following four values:
 //

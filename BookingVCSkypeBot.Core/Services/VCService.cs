@@ -6,9 +6,9 @@ namespace BookingVCSkypeBot.Core.Services
 {
     public class VCService : IVCService
     {
-        public IEnumerable<VCEntity> VCListByTownName(string townName)
+        public IEnumerable<VC> VCListByLocationId(int locationId)
         {
-            return new List<VCEntity>();
+            return new List<VC>();
         }
     }
 }

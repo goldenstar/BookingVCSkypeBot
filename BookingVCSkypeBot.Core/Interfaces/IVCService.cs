@@ -5,6 +5,6 @@ namespace BookingVCSkypeBot.Core.Interfaces
 {
     public interface IVCService : IBaseService
     {
-        IEnumerable<VCEntity> VCListByTownName(string townName);
+        IEnumerable<VC> VCListByLocationId(int locationId);
     }
 }

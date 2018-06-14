@@ -22,14 +22,14 @@ namespace BookingVCSkypeBot {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class DialogResource {
+    internal class DialogRes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal DialogResource() {
+        internal DialogRes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace BookingVCSkypeBot {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BookingVCSkypeBot.DialogResource", typeof(DialogResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BookingVCSkypeBot.DialogRes", typeof(DialogRes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QUIT,CANCEL,STOP,EXIT.
+        /// </summary>
+        internal static string CancellationWords {
+            get {
+                return ResourceManager.GetString("CancellationWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, enter your date of meeting (MM/dd/yyyy).
         /// </summary>
         internal static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to I am sorry but I don&apos;t understand that. I need you to re-enter date..
-        /// </summary>
-        internal static string DateNotValid {
-            get {
-                return ResourceManager.GetString("DateNotValid", resourceCulture);
             }
         }
         
@@ -97,11 +97,11 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I am sorry but I don&apos;t understand that. I need you to re-enter duration..
+        ///   Looks up a localized string similar to Please, select a location.
         /// </summary>
-        internal static string DurationNotValid {
+        internal static string Location {
             get {
-                return ResourceManager.GetString("DurationNotValid", resourceCulture);
+                return ResourceManager.GetString("Location", resourceCulture);
             }
         }
         
@@ -115,11 +115,20 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok. You want to invate {0} people from {1}. The meeting starts in {2} and ends in {3}..
+        ///   Looks up a localized string similar to You want to invate {0} people from {1}. The meeting starts in {2} and ends in {3}. Is it right?.
         /// </summary>
         internal static string MeetingSelected {
             get {
                 return ResourceManager.GetString("MeetingSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -169,24 +178,6 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I am sorry but I didn&apos;t understand that. I need you to re-enter time..
-        /// </summary>
-        internal static string TimeNotValid {
-            get {
-                return ResourceManager.GetString("TimeNotValid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, select a town.
-        /// </summary>
-        internal static string Town {
-            get {
-                return ResourceManager.GetString("Town", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to I am sorry but I don&apos;t understand that. I need you to select one of the options below..
         /// </summary>
         internal static string TownNotValid {
@@ -205,11 +196,29 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value you entered is not a valid. Please try again..
+        /// </summary>
+        internal static string ValueNotValid {
+            get {
+                return ResourceManager.GetString("ValueNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hi, I&apos;m the Booking VC Skype bot. Let&apos;s get started..
         /// </summary>
         internal static string WelcomeMessage {
             get {
                 return ResourceManager.GetString("WelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

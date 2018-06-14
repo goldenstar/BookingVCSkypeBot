@@ -4,7 +4,7 @@ namespace BookingVCSkypeBot.Helpers
 {
     public static class TimeDurationParser
     {
-        public static bool TryHMParse(this string s, out TimeSpan timeSpan)
+        public static bool TryToHourMinuteParse(this string s, out TimeSpan timeSpan)
         {
             float seconds = 0;
             float current = 0;
@@ -31,8 +31,10 @@ namespace BookingVCSkypeBot.Helpers
 
                     switch (c)
                     {
-                        case 'm': multiplier = 60; break;     // minutes
-                        case 'h': multiplier = 3600; break;   // hours
+                        case 'm': multiplier = 60;
+                            break;
+                        case 'h': multiplier = 3600;
+                            break;
                         default:
                         {
                             result = false;

@@ -87,8 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="InMemoryTokenCacheMSAL.cs" />
-    <Compile Include="MSALAuthProvider.cs" />
+    <Compile Include="AuthTokenCache.cs" />
+    <Compile Include="AuthProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\AsyncUsageAnalyzers.1.0.0-alpha003\analyzers\dotnet\AsyncUsageAnalyzers.dll" />

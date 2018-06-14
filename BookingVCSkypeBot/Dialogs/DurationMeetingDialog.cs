@@ -11,7 +11,7 @@ namespace BookingVCSkypeBot.Dialogs
     {
         public override async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync(string.Format(DialogResource.Duration));
+            await context.PostAsync(string.Format(DialogRes.Duration));
 
             context.Wait(MessageReceivedAsync);
         }
@@ -20,13 +20,13 @@ namespace BookingVCSkypeBot.Dialogs
         {
             var message = await result;
 
-            if (message.Text.TryHMParse(out var span))
+            if (message.Text.TryToHourMinuteParse(out var span))
             {
                 context.Done(span);
             }
             else
             {
-                await SetDialogError(context, DialogResource.DurationNotValid);
+                await SetDialogErrorAsync(context, DialogRes.ValueNotValid);
             }
         }
     }

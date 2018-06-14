@@ -14,7 +14,7 @@ namespace BookingVCSkypeBot.Dialogs
 
         public abstract Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result);
 
-        protected async Task SetDialogError(IDialogContext context, string errrorMessage)
+        protected async Task SetDialogErrorAsync(IDialogContext context, string errrorMessage)
         {
             --attempts;
 

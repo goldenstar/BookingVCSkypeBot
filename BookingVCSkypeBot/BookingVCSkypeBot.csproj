@@ -162,7 +162,6 @@
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
     <Content Include="BookingVCSkypeBot.bot" />
-    <Content Include="magic.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -170,13 +169,14 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
-    <Compile Include="CustomModule.cs" />
-    <Compile Include="DialogResource.Designer.cs">
+    <Compile Include="BookingVCSkypeBotModule.cs" />
+    <Compile Include="DialogRes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DialogResource.resx</DependentUpon>
+      <DependentUpon>DialogRes.resx</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\BaseDialog.cs" />
+    <Compile Include="Dialogs\CancelScorable.cs" />
     <Compile Include="Dialogs\MeetingDateTimeDialogs\StartMeetingDateTimeDialog.cs" />
     <Compile Include="Dialogs\MeetingDateTimeDialogs\StartMeetingTimeDialog.cs" />
     <Compile Include="Dialogs\DurationMeetingDialog.cs" />
@@ -214,11 +214,15 @@
       <Project>{2abdf0fc-7533-41b0-b530-3003d4d2ef4e}</Project>
       <Name>BookingVCSkypeBot.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BookingVCSkypeBot.Infrastructure\BookingVCSkypeBot.Infrastructure.csproj">
+      <Project>{87239f18-8061-4de4-a9b5-1a5a1ada46f5}</Project>
+      <Name>BookingVCSkypeBot.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DialogResource.resx">
+    <EmbeddedResource Include="DialogRes.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>DialogResource.Designer.cs</LastGenOutput>
+      <LastGenOutput>DialogRes.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

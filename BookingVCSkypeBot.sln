@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingVCSkypeBot.Authentic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingVCSkypeBot.Authentication", "BookingVCSkypeBot.Authentication\BookingVCSkypeBot.Authentication.csproj", "{54162CB7-BBEC-4C8C-B7A9-70144556E3E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingVCSkypeBot.Infrastructure", "BookingVCSkypeBot.Infrastructure\BookingVCSkypeBot.Infrastructure.csproj", "{87239F18-8061-4DE4-A9B5-1A5A1ADA46F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{54162CB7-BBEC-4C8C-B7A9-70144556E3E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54162CB7-BBEC-4C8C-B7A9-70144556E3E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54162CB7-BBEC-4C8C-B7A9-70144556E3E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87239F18-8061-4DE4-A9B5-1A5A1ADA46F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87239F18-8061-4DE4-A9B5-1A5A1ADA46F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87239F18-8061-4DE4-A9B5-1A5A1ADA46F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87239F18-8061-4DE4-A9B5-1A5A1ADA46F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,8 +3,8 @@ using BookingVCSkypeBot.Core.Entities;
 
 namespace BookingVCSkypeBot.Core.Interfaces
 {
-    public interface ITownService : IBaseService
+    public interface ILocationService : IBaseService
     {
-        IEnumerable<TownEntity> ListAll();
+        IEnumerable<Location> ListAll();
     }
 }

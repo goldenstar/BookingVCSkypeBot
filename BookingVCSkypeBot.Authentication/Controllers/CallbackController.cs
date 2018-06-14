@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -6,7 +7,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Threading;
-using System.Security.Cryptography;
 using System.Reflection;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
@@ -18,9 +18,6 @@ namespace BookingVCSkypeBot.Authentication.Controllers
 {
     public class CallbackController : ApiController
     {
-        private static readonly RNGCryptoServiceProvider RngCsp = new RNGCryptoServiceProvider();
-        private const uint MaxWriteAttempts = 5;
-
         [HttpGet]
         [Route("Callback")]
         public async Task<HttpResponseMessage> Callback()
@@ -30,106 +27,95 @@ namespace BookingVCSkypeBot.Authentication.Controllers
 
         [HttpGet]
         [Route("Callback")]
-        public async Task<HttpResponseMessage> Callback([FromUri] string code, [FromUri] string state, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> Callback([FromUri] string code, [FromUri] string state)
         {
             try
             {
-                // Use the state parameter to get correct IAuthProvider and ResumptionCookie
-                var decoded = Encoding.UTF8.GetString(HttpServerUtility.UrlTokenDecode(state));
-                var queryString = HttpUtility.ParseQueryString(decoded);
-                var assembly = Assembly.Load(queryString["providerassembly"]);
-                var type = assembly.GetType(queryString["providertype"]);
-                var providername = queryString["providername"];
+                var callbackModel = GetCallbackModel(state);
 
-                IAuthProvider authProvider;
-                if (type.GetConstructor(new[] {typeof(string)}) != null)
-                {
-                    authProvider = (IAuthProvider)Activator.CreateInstance(type, providername);
-                }
-                else
-                {
-                    authProvider = (IAuthProvider)Activator.CreateInstance(type);
-                }
+                var authProvider = GetAuthProvider(callbackModel.Query);
 
-                // Get the conversation reference
-                var conversationRef = UrlToken.Decode<ConversationReference>(queryString["conversationRef"]);
-                
-                var message = conversationRef.GetPostToBotMessage();
-                using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, message))
+                using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, callbackModel.Message))
                 {
-                    // Get the UserData from the original conversation
-                    var stateStore = scope.Resolve<IBotDataStore<BotData>>();
-                    var key = Address.FromActivity(message);
-                    var userData = await stateStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
-                    
-                    // Get Access Token using authorization code
-                    var authOptions = userData.GetProperty<AuthenticationOptions>($"{authProvider.Name}{ContextConstants.AuthOptions}");
-                    var token = await authProvider.GetTokenByAuthCodeAsync(authOptions, code);
+                    var store = scope.Resolve<IBotDataStore<BotData>>();
+                    var keyAddress = Address.FromActivity(callbackModel.Message);
+                    var userData = await store.LoadAsync(keyAddress, BotStoreType.BotUserData, CancellationToken.None);
 
-                    // Generate magic number and attempt to write to userdata
-                    var magicNumber = GenerateRandomNumber();
-                    var writeSuccessful = false;
-                    uint writeAttempts = 0;
-                    while (!writeSuccessful && writeAttempts++ < MaxWriteAttempts)
+                    var magicNumber = new Random().Next(100000, 999999);
+                    var token = await GetToken(code, userData, authProvider);
+
+                    bool successful;
+                    try
                     {
-                        try
-                        {
-                            userData.SetProperty($"{authProvider.Name}{ContextConstants.AuthResultKey}", token);
-                            if (authOptions.UseMagicNumber)
-                            {
-                                userData.SetProperty($"{authProvider.Name}{ContextConstants.MagicNumberKey}", magicNumber);
-                                userData.SetProperty($"{authProvider.Name}{ContextConstants.MagicNumberValidated}", "false");
-                            }
-                            await stateStore.SaveAsync(key, BotStoreType.BotUserData, userData, CancellationToken.None);
-                            await stateStore.FlushAsync(key, CancellationToken.None);
-                            writeSuccessful = true;
-                        }
-                        catch (Exception)
-                        {
-                            writeSuccessful = false;
-                        }
+                        userData.SetProperty($"{ContextKey.AuthResult}", token);
+                        userData.SetProperty($"{ContextKey.MagicNumber}", magicNumber);
+                        userData.SetProperty($"{ContextKey.MagicNumberValidated}", false);
+                        await store.SaveAsync(keyAddress, BotStoreType.BotUserData, userData, CancellationToken.None);
+                        await store.FlushAsync(keyAddress, CancellationToken.None);
+                        successful = true;
                     }
-                    var resp = new HttpResponseMessage(HttpStatusCode.OK);
-                    if (!writeSuccessful)
+                    catch (Exception)
                     {
-                        message.Text = string.Empty; // fail the login process if we can't write UserData
-                        await Conversation.ResumeAsync(conversationRef, message);
-                        resp.Content = new StringContent("<html><body>Could not log you in at this time, please try again later</body></html>", Encoding.UTF8, @"text/html");
-                        return resp;
+                        successful = false;
                     }
 
-                    await Conversation.ResumeAsync(conversationRef, message);
-
-                    // check if the user has configured an alternate magic number view
-                    if (!string.IsNullOrEmpty(authOptions.MagicNumberView))
+                    var response = new HttpResponseMessage(HttpStatusCode.OK)
                     {
-                        var redirect = Request.CreateResponse(HttpStatusCode.Moved);
-                        redirect.Headers.Location = new Uri(string.Format(authOptions.MagicNumberView, magicNumber), UriKind.Relative);
-                        return redirect;
-                    }
+                        Content = GetResponseContent(successful, magicNumber)
+                    };
 
-                    resp.Content = new StringContent($"<html><body>Almost done! Please copy this number and paste it back to your chat so your authentication can complete:<br/> <h1>{magicNumber}</h1>.</body></html>", Encoding.UTF8, @"text/html");
-                    return resp;
+                    await Conversation.ResumeAsync(callbackModel.ConversationReference, callbackModel.Message);
+
+                    return response;
                 }
             }
             catch (Exception ex)
             {
-                // Callback is called with no pending message as a result the login flow cannot be resumed.
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
             }
         }
 
-        private static int GenerateRandomNumber()
+        private static StringContent GetResponseContent(bool successful, int magicNumber)
         {
-            var number = 0;
-            var randomNumber = new byte[1];
-            do
+            return successful
+                ? new StringContent(string.Format(AuthRes.SuccessfulMagicNumberResponse, magicNumber), Encoding.UTF8, @"text/html")
+                : new StringContent(AuthRes.WrongMagicNumberResponse, Encoding.UTF8, @"text/html");
+        }
+
+        private static async Task<AuthResult> GetToken(string code, BotData userData, IAuthProvider authProvider)
+        {
+            var authOptions = userData.GetProperty<AuthenticationOptions>($"{ContextKey.AuthOptions}");
+
+            return await authProvider.GetTokenByAuthCodeAsync(authOptions, code);
+        }
+
+        private static CallbackModel GetCallbackModel(string state)
+        {
+            var model = new CallbackModel
             {
-                RngCsp.GetBytes(randomNumber);
-                var digit = randomNumber[0] % 10;
-                number = number * 10 + digit;
-            } while (number.ToString().Length < 6);
-            return number;
+                Query = GetQuery(state)
+            };
+
+            model.ConversationReference = UrlToken.Decode<ConversationReference>(model.Query["conversationRef"]);
+            model.Message = model.ConversationReference.GetPostToBotMessage();
+
+            return model;
+        }
+
+        private static NameValueCollection GetQuery(string state)
+        {
+            var decoded = Encoding.UTF8.GetString(HttpServerUtility.UrlTokenDecode(state));
+
+            return HttpUtility.ParseQueryString(decoded);
+        }
+
+        private static IAuthProvider GetAuthProvider(NameValueCollection queryString)
+        {
+            var assembly = Assembly.Load(queryString["providerassembly"]);
+
+            var type = assembly.GetType(queryString["providertype"]);
+
+            return (IAuthProvider) Activator.CreateInstance(type);
         }
     }
 }

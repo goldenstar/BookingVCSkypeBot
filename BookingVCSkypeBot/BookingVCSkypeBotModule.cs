@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using Autofac;
 using BookingVCSkypeBot.Authentication;
 using BookingVCSkypeBot.Authentication.AADv2;
@@ -72,9 +71,11 @@ namespace BookingVCSkypeBot
                 .As<IAuthProvider>()
                 .InstancePerDependency();
 
-            var docDbServiceEndpoint = new Uri(ConfigurationManager.AppSettings["DocumentDbServiceEndpoint"]);
+            /*var docDbServiceEndpoint = new Uri(ConfigurationManager.AppSettings["DocumentDbServiceEndpoint"]);
             var docDbEmulatorKey = ConfigurationManager.AppSettings["DocumentDbAuthKey"];
-            var store = new DocumentDbBotDataStore(docDbServiceEndpoint, docDbEmulatorKey);
+            var store = new DocumentDbBotDataStore(docDbServiceEndpoint, docDbEmulatorKey);*/
+
+            var store = new TableBotDataStore(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
 
             builder.Register(c => store)
                 .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)

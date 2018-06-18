@@ -33,6 +33,8 @@ namespace BookingVCSkypeBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
+            
+
             await context.PostAsync("Hi, I'm the Basic Multi Dialog bot. Let's get started.");
 
             context.Wait(MessageReceivedAsync);

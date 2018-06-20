@@ -162,6 +162,7 @@
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
     <Content Include="BookingVCSkypeBot.bot" />
+    <Content Include="Resourses\logo.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -199,6 +200,7 @@
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

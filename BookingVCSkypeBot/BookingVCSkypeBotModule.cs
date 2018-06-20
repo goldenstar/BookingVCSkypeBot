@@ -71,10 +71,6 @@ namespace BookingVCSkypeBot
                 .As<IAuthProvider>()
                 .InstancePerDependency();
 
-            /*var docDbServiceEndpoint = new Uri(ConfigurationManager.AppSettings["DocumentDbServiceEndpoint"]);
-            var docDbEmulatorKey = ConfigurationManager.AppSettings["DocumentDbAuthKey"];
-            var store = new DocumentDbBotDataStore(docDbServiceEndpoint, docDbEmulatorKey);*/
-
             var store = new TableBotDataStore(ConfigurationManager.AppSettings["AzureWebJobsStorage"]);
 
             builder.Register(c => store)

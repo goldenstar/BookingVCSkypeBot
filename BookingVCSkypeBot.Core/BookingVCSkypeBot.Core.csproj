@@ -50,7 +50,6 @@
     <Compile Include="Interfaces\ILocationService.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IVCService.cs" />
-    <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\VCService.cs" />

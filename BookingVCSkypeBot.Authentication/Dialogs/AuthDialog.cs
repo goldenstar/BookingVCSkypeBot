@@ -29,6 +29,11 @@ namespace BookingVCSkypeBot.Authentication.Dialogs
         {
             var msg = await argument;
 
+            if (msg.Text == "SINGOUT")
+            {
+                ClearUserData(context.UserData);
+            }
+
             if (context.UserData.TryGetValue($"{ContextKey.AuthResult}", out AuthResult authResult))
             {
                 await CheckAuthUser(context, msg, authResult);
@@ -64,7 +69,7 @@ namespace BookingVCSkypeBot.Authentication.Dialogs
             }
         }
 
-        private async Task TrySetUser(IDialogContext context, IActivity msg)
+        private async Task TrySetUser(IDialogContext context, IMessageActivity msg)
         {
             var token = await authProvider.GetTokenByContextAsync(authOptions, context);
 

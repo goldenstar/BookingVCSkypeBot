@@ -33,7 +33,7 @@ namespace BookingVCSkypeBot.Dialogs
 
         public async Task StartAsync(IDialogContext context)
         {
-            await context.PostAsync("Hi, I'm the Basic Multi Dialog bot. Let's get started.");
+            await context.PostAsync("Hi, I'm the Dialog bot. Let's get started.");
 
             context.Wait(MessageReceivedAsync);
         }
@@ -44,9 +44,8 @@ namespace BookingVCSkypeBot.Dialogs
 
             var options = new AuthenticationOptions
             {
-                Authority = ConfigurationManager.AppSettings["aad:Authority"],
-                ClientId = ConfigurationManager.AppSettings["aad:ClientIdTest"],
-                ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecretTest"],
+                ClientId = ConfigurationManager.AppSettings["aad:ClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecret"],
                 RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"],
                 Scopes = new[] { ConfigurationManager.AppSettings["aad:Scopes"] }
             };

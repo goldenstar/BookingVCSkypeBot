@@ -70,6 +70,15 @@ namespace BookingVCSkypeBot.Authentication {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to QUIT,CANCEL,STOP,EXIT.
+        /// </summary>
+        internal static string CancellationWords {
+            get {
+                return ResourceManager.GetString("CancellationWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please paste back the number you received in your authentication screen..
         /// </summary>
         internal static string EnterMagicNumber {

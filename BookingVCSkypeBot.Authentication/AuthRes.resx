@@ -120,6 +120,9 @@
   <data name="AuthenticationRequired" xml:space="preserve">
     <value>Authentication Required</value>
   </data>
+  <data name="CancellationWords" xml:space="preserve">
+    <value>QUIT,CANCEL,STOP,EXIT</value>
+  </data>
   <data name="EnterMagicNumber" xml:space="preserve">
     <value>Please paste back the number you received in your authentication screen.</value>
   </data>

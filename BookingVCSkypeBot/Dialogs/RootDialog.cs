@@ -47,6 +47,8 @@ namespace BookingVCSkypeBot.Dialogs
                 ClientId = ConfigurationManager.AppSettings["aad:ClientId"],
                 ClientSecret = ConfigurationManager.AppSettings["aad:ClientSecret"],
                 RedirectUrl = ConfigurationManager.AppSettings["aad:Callback"],
+
+                Authority = ConfigurationManager.AppSettings["aad:Authority"],
                 Scopes = new[] { ConfigurationManager.AppSettings["aad:Scopes"] }
             };
 

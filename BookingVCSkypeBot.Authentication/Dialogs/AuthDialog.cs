@@ -29,11 +29,6 @@ namespace BookingVCSkypeBot.Authentication.Dialogs
         {
             var msg = await argument;
 
-            if (msg.Text == "SINGOUT")
-            {
-                ClearUserData(context.UserData);
-            }
-
             if (context.UserData.TryGetValue($"{ContextKey.AuthResult}", out AuthResult authResult))
             {
                 await CheckAuthUser(context, msg, authResult);

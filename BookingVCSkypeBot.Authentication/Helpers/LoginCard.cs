@@ -22,9 +22,9 @@ namespace BookingVCSkypeBot.Authentication.Helpers
 
         public async Task<SigninCard> GetSinginCard(IDialogContext context)
         {
-            var authenticationUrl = await GetAuthenticationUrl(context);
+            var authenticationUrl = await GetAuthenticationUrlAsync(context);
 
-            return new SigninCard("", GetCardActions(authenticationUrl));
+            return new SigninCard("Login", GetCardActions(authenticationUrl));
         }
 
         private static List<CardAction> GetCardActions(string authenticationUrl)
@@ -34,7 +34,8 @@ namespace BookingVCSkypeBot.Authentication.Helpers
             var plButton = new CardAction
             {
                 Value = authenticationUrl,
-                Title = AuthRes.AuthenticationRequired
+                Title = AuthRes.AuthenticationRequired,
+                Type = "signin"
             };
 
             cardButtons.Add(plButton);
@@ -42,12 +43,11 @@ namespace BookingVCSkypeBot.Authentication.Helpers
             return cardButtons;
         }
 
-        private async Task<string> GetAuthenticationUrl(IBotContext context)
+        private async Task<string> GetAuthenticationUrlAsync(IBotContext context)
         {
             var conversationRef = context.Activity.ToConversationReference();
             var state = GetState(conversationRef);
-            var authenticationUrl = await authProvider.GetAuthUrlAsync(authOptions, state);
-            return authenticationUrl;
+            return await authProvider.GetAuthUrlAsync(authOptions, state);
         }
 
         private string GetState(ConversationReference conversationRef)

@@ -61,15 +61,6 @@ namespace BookingVCSkypeBot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to QUIT,CANCEL,STOP,EXIT.
-        /// </summary>
-        internal static string CancellationWords {
-            get {
-                return ResourceManager.GetString("CancellationWords", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please, enter your date of meeting (MM/dd/yyyy).
         /// </summary>
         internal static string Date {

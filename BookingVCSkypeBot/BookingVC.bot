@@ -1,0 +1,15 @@
+{
+    "name": "BookingVC",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "2fc6e21e-b990-4bf3-afab-f79f4118c277",
+            "id": "1f46be00-75f4-11e8-b67c-c79382a49877",
+            "type": "endpoint",
+            "appPassword": "axjrRMZFVS193}+!~dwcQ80",
+            "endpoint": "https://bookingvc.azurewebsites.net/api/messages",
+            "name": "BookingVC"
+        }
+    ]
+}

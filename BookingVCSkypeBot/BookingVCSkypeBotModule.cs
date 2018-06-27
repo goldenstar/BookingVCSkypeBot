@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Text.RegularExpressions;
 using Autofac;
 using BookingVCSkypeBot.Authentication;
 using BookingVCSkypeBot.Authentication.AADv2;
@@ -36,9 +38,9 @@ namespace BookingVCSkypeBot
                 .As<IDialog<object>>()
                 .InstancePerDependency();
 
-            builder.Register(c => new CancelScorable(c.Resolve<IDialogTask>()))
-                .As<IScorable<IActivity, double>>()
-                .InstancePerLifetimeScope();
+            builder.Register(c => new Regex("^(\\s)*exit|quit|cancel|signout|quit|stop|deleteprofile", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace))
+                .Keyed<Regex>(DialogModule.Key_DeleteProfile_Regex)
+                .SingleInstance();
         }
 
         private static void RegisterDB(ContainerBuilder builder)
@@ -67,22 +69,20 @@ namespace BookingVCSkypeBot
 
         private static void RegisterAuth(ContainerBuilder builder)
         {
-            builder.RegisterType<AuthProvider>()
-                .As<IAuthProvider>()
-                .InstancePerDependency();
+            var docDbServiceEndpoint = new Uri(ConfigurationManager.AppSettings["DocumentDbUrl"]);
+            var docDbEmulatorKey = ConfigurationManager.AppSettings["DocumentDbKey"];
+            //var store = new DocumentDbBotDataStore(docDbServiceEndpoint, docDbEmulatorKey);
 
-            var store = new TableBotDataStore(ConfigurationManager.AppSettings["AzureWebJobsStorage"]); // PUBLISH
-
-            /*var docDbServiceEndpoint = new Uri(ConfigurationManager.AppSettings["DocumentDbServiceEndpoint"]); // LOCAL
-            var docDbEmulatorKey = ConfigurationManager.AppSettings["DocumentDbAuthKey"];
-            var store = new DocumentDbBotDataStore(docDbServiceEndpoint, docDbEmulatorKey);*/
-
-            //var store = new InMemoryDataStore();
+            var store = new InMemoryDataStore();
 
             builder.Register(c => store)
                 .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)
                 .AsSelf()
                 .SingleInstance();
+
+            builder.RegisterType<AuthProvider>()
+                .As<IAuthProvider>()
+                .InstancePerDependency();
         }
     }
 }

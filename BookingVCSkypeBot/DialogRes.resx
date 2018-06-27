@@ -168,7 +168,4 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="CancellationWords" xml:space="preserve">
-    <value>QUIT,CANCEL,STOP,EXIT</value>
-  </data>
 </root>

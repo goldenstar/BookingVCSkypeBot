@@ -19,9 +19,9 @@ namespace BookingVCSkypeBot
         {
             Conversation.UpdateContainer(builder =>
             {
-                builder.RegisterModule<BookingVCSkypeBotModule>();
-
                 builder.RegisterModule(new AzureModule(Assembly.GetExecutingAssembly()));
+
+                builder.RegisterModule<BookingVCSkypeBotModule>();
             });
         }
     }

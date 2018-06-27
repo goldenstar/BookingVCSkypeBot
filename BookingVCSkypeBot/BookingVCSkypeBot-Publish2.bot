@@ -1,0 +1,14 @@
+{
+    "name": "BookingVCSkypeBot-Publish2",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "17e270ee-03d9-4746-92f5-3d2997bdb0a8",
+            "id": "ce7bd97d-4c1e-4369-ad6e-fc123905fdd6",
+            "type": "endpoint",
+            "appPassword": "ntkhDBEFEH990!?{~asgX14",
+            "endpoint": "https://bookingvcskypebot2.azurewebsites.net/api/messages",
+            "name": "BookingVCSkypeBot-Publish2"
+        }
+    ]
+}
